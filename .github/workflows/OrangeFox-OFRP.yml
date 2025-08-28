@@ -120,19 +120,34 @@ jobs:
 
     - uses: actions/upload-artifact@v4
       with:
-        name: OrangeFox-${{ inputs.BUILD_TARGET }}-${{ env.BUILD_DATE }}
-        path: |
-          ${{ github.workspace }}/${{ env.OUTPUT_DIR }}/target/product/${{ inputs.BUILD_TARGET }}/*.zip
-          ${{ github.workspace }}/${{ env.OUTPUT_DIR }}/target/product/${{ inputs.BUILD_TARGET }}/*.tar
-          ${{ github.workspace }}/${{ env.OUTPUT_DIR }}/target/product/${{ inputs.BUILD_TARGET }}/*.img
-          ${{ github.workspace }}/${{ env.OUTPUT_DIR }}/target/product/${{ inputs.BUILD_TARGET }}/*.md5
+        name: OrangeFox-${{ inputs.DEVICE_NAME }}-${{ env.BUILD_DATE }}-zip
+        continue-on-error: true
+        path: ${{ env.OUTPUT_DIR }}/target/product/${{ inputs.DEVICE_NAME }}/*.zip
 
+    - uses: actions/upload-artifact@v4
+      with:
+        name: OrangeFox-${{ inputs.DEVICE_NAME }}-${{ env.BUILD_DATE }}-tar
+        continue-on-error: true
+        path: ${{ env.OUTPUT_DIR }}/target/product/${{ inputs.DEVICE_NAME }}/*.tar
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: OrangeFox-${{ inputs.DEVICE_NAME }}-${{ env.BUILD_DATE }}-img
+        continue-on-error: true
+        path: ${{ env.OUTPUT_DIR }}/target/product/${{ inputs.DEVICE_NAME }}/*.img
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: OrangeFox-${{ inputs.DEVICE_NAME }}-${{ env.BUILD_DATE }}
+        continue-on-error: true
+        path: ${{ env.OUTPUT_DIR }}/target/product/${{ inputs.DEVICE_NAME }}
 
     - name: Check if the recovery exists # It makes the recovery.img and renames it to Orangefox*.img but the OG should also work
+      continue-on-error: true
       if: always()
       run: |
-        img_file=$(find "${{ env.OUTPUT_DIR }}/target/product/${{ inputs.BUILD_TARGET }}" -name "${{ inputs.BUILD_TARGET }}*.img" -print -quit)
-        zip_file=$(find "${{ env.OUTPUT_DIR }}/target/product/${{ inputs.BUILD_TARGET }}" -name "OrangeFox*.zip" -print -quit)
+        img_file=$(find "${{ env.OUTPUT_DIR }}/target/product/${{ inputs.DEVICE_NAME }}" -name "${{ inputs.BUILD_TARGET }}*.img" -print -quit)
+        zip_file=$(find "${{ env.OUTPUT_DIR }}/target/product/${{ inputs.DEVICE_NAME }}" -name "OrangeFox*.zip" -print -quit)
         if [ -f "$img_file" ]; then
             echo "CHECK_IMG_IS_OK=true" >> $GITHUB_ENV
             echo "MD5_IMG=$(md5sum "$img_file" | cut -d ' ' -f 1)" >> $GITHUB_ENV
@@ -151,10 +166,10 @@ jobs:
       uses: softprops/action-gh-release@master
       with:
         files: |
-          ${{ env.OUTPUT_DIR }}/target/product/${{ inputs.BUILD_TARGET }}/OrangeFox*.img
-          ${{ env.OUTPUT_DIR }}/target/product/${{ inputs.BUILD_TARGET }}/OrangeFox*.tar
-          ${{ env.OUTPUT_DIR }}/target/product/${{ inputs.BUILD_TARGET }}/OrangeFox*.zip
-          ${{ env.OUTPUT_DIR }}/target/product/${{ inputs.BUILD_TARGET }}/ramdisk-recovery.*
+          ${{ env.OUTPUT_DIR }}/target/product/${{ inputs.DEVICE_NAME }}/OrangeFox*.img
+          ${{ env.OUTPUT_DIR }}/target/product/${{ inputs.DEVICE_NAME }}/OrangeFox*.tar
+          ${{ env.OUTPUT_DIR }}/target/product/${{ inputs.DEVICE_NAME }}/OrangeFox*.zip
+          ${{ env.OUTPUT_DIR }}/target/product/${{ inputs.DEVICE_NAME }}/ramdisk-recovery.*
         name: Unofficial OrangeFox for ${{ inputs.DEVICE_NAME }} // ${{ env.BUILD_DATE }}
         tag_name: ${{ github.run_id }}
         body: |
