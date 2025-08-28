@@ -9,8 +9,8 @@ on:
         default: '12.1'
         type: choice
         options:
-        - 12.1
-        - 11.0
+        - '12.1'
+        - '11.0'
       DEVICE_TREE:
         description: 'Custom Recovery Tree'
         required: true
