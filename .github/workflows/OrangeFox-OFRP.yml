@@ -143,7 +143,6 @@ jobs:
         path: ${{ env.OUTPUT_DIR }}/target/product/${{ inputs.DEVICE_NAME }}
 
     - name: Check if the recovery exists # It makes the recovery.img and renames it to Orangefox*.img but the OG should also work
-      continue-on-error: true
       if: always()
       run: |
         img_file=$(find "${{ env.OUTPUT_DIR }}/target/product/${{ inputs.DEVICE_NAME }}" -name "${{ inputs.BUILD_TARGET }}*.img" -print -quit)
