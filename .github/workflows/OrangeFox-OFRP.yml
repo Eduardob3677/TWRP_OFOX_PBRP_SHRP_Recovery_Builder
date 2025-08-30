@@ -1,6 +1,9 @@
 name: OrangeFox [OFRP]
 
 on:
+  repository_dispatch:
+    types: [trigger-ofox]
+  push:
   workflow_dispatch:
     inputs:
       MANIFEST_BRANCH:
