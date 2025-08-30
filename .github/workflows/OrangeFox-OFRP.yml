@@ -56,8 +56,16 @@ jobs:
     if: github.event.repository.owner.id == github.event.sender.id
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      ORANGEFOX_ROOT: ${{ github.workspace }}/OrangeFox/fox_${{ inputs.MANIFEST_BRANCH }}
-      OUTPUT_DIR: ${{ github.workspace }}/OrangeFox/fox_${{ inputs.MANIFEST_BRANCH }}/out/target/product/${{ inputs.DEVICE_NAME }}
+      MANIFEST_BRANCH: ${{ github.event.inputs.MANIFEST_BRANCH || '12.1' }}
+      DEVICE_TREE: ${{ github.event.inputs.DEVICE_TREE || 'https://github.com/Eduardob3677/android_device_samsung_sm8550-common-ofox.git' }}
+      DEVICE_TREE_BRANCH: ${{ github.event.inputs.DEVICE_TREE_BRANCH || 'android-12.1' }}
+      DEVICE_NAME: ${{ github.event.inputs.DEVICE_NAME || 'dm2q' }}
+      DEVICE_PATH: ${{ github.event.inputs.DEVICE_PATH || 'device/samsung/dm2q' }}
+      BUILD_TARGET: ${{ github.event.inputs.BUILD_TARGET || 'recovery' }}
+      LDCHECK: ${{ github.event.inputs.LDCHECK || 'false' }}
+      LDCHECKPATH: ${{ github.event.inputs.LDCHECKPATH || 'system/bin/qseecomd' }}
+      ORANGEFOX_ROOT: ${{ github.workspace }}/OrangeFox/fox_${{ env.MANIFEST_BRANCH }}
+      OUTPUT_DIR: ${{ github.workspace }}/OrangeFox/fox_${{ env.MANIFEST_BRANCH }}/out/target/product/${{ env.DEVICE_NAME }}
 
     permissions:
       contents: write
