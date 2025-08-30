@@ -64,8 +64,8 @@ jobs:
       BUILD_TARGET: ${{ github.event.inputs.BUILD_TARGET || 'recovery' }}
       LDCHECK: ${{ github.event.inputs.LDCHECK || 'false' }}
       LDCHECKPATH: ${{ github.event.inputs.LDCHECKPATH || 'system/bin/qseecomd' }}
-      ORANGEFOX_ROOT: ${{ github.workspace }}/OrangeFox/fox_${{ env.MANIFEST_BRANCH }}
-      OUTPUT_DIR: ${{ github.workspace }}/OrangeFox/fox_${{ env.MANIFEST_BRANCH }}/out/target/product/${{ env.DEVICE_NAME }}
+      ORANGEFOX_ROOT: ${{ github.workspace }}/OrangeFox/fox_${{ github.event.inputs.MANIFEST_BRANCH || '12.1' }}
+      OUTPUT_DIR: ${{ github.workspace }}/OrangeFox/fox_${{ github.event.inputs.MANIFEST_BRANCH || '12.1' }}/out/target/product/${{ github.event.inputs.DEVICE_NAME || 'dm2q' }}
 
     permissions:
       contents: write
